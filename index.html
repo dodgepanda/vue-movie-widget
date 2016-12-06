@@ -29,7 +29,7 @@
 </head>
 
 <body>
-  <div id="app" tabindex="-1" v-on:mousedown="mouseDown" v-on:mouseup="mouseUp" v-on:keydown.left="navLeft" v-on:keydown.right="navRight">
+  <div id="app" v-on:touchstart="mouseDown" v-on:touchend="mouseUp" v-on:keydown.left="navLeft" v-on:keydown.right="navRight">
     myIdx: {{ myIdx }} <br>
     <div>{{ getMovieProperty('Title') }} <a v-bind:href="'http://www.imdb.com/title/' + getMovieProperty('imdbID')" target="_blank">IMDB</a></div>
     <div>{{ getMovieProperty('Plot') }}</div>
@@ -45,7 +45,7 @@
       <button v-on:click="navLeft"><</button>
       <button v-on:click="navRight">></button>
     </div>
-    <pre>{{ movies[myIdx] }}</pre>
+    <!--<pre>{{ movies[myIdx] }}</pre>-->
   </div>
 
   <script>
@@ -65,7 +65,9 @@
         // Movie data from Open Movie Database - my top five Marvel movies
         var movieUrls = [
           'https://www.omdbapi.com/?t=guardians+of+the+galaxy&y=&plot=short&r=json',
-          'https://www.omdbapi.com/?t=strange&y=2016&plot=short&r=json'
+          'http://www.omdbapi.com/?t=civil+war&y=2016&plot=short&r=json',
+          'http://www.omdbapi.com/?t=winter+soldier&y=2014&plot=short&r=json',
+          'https://www.omdbapi.com/?t=strange&y=2016&plot=short&r=json',
         ];
 
         // Function that returns a promise that should resolve with the JSON for the requested movie
@@ -119,19 +121,18 @@
           }
         },
         mouseDown: function(e) {
-          //console.log('mouseDown', e.x);
+          console.log('mouseDown', e.changedTouches[0].clientX);
           this.mouse.down = true;
-          this.mouse.x = e.x;
+          this.mouse.x = e.changedTouches[0].clientX;
         },
         mouseUp: function(e) {
-          // todo: deltaTime threshold between mouse up & down to swipe when hilightning text..
           if (this.mouse.down) {
-            var deltaX = e.x - this.mouse.x;
-            //console.log('mouseUp', e.x, deltaX);
+            var deltaX = e.changedTouches[0].clientX - this.mouse.x;
+            console.log('mouseUp', e.changedTouches[0].clientX, deltaX);
             this.mouse.down = false;
             var threshold = 200;
             if (Math.abs(deltaX) >= threshold) {
-              if (deltaX > 0) {
+              if (deltaX < 0) {
                 this.navRight();
               } else {
                 this.navLeft();
