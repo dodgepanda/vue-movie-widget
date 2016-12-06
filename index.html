@@ -38,25 +38,25 @@
 
 <body>
   <div id="app" tabindex="-1" v-on:touchstart="mouseDown" v-on:touchend="mouseUp" v-on:keydown.left="navLeft" v-on:keydown.right="navRight">
-    myIdx: {{ myIdx }} <br>
+    movieIdx: {{ movieIdx }} <br>
     <div>{{ getMovieProperty('Title') }} <a v-bind:href="'http://www.imdb.com/title/' + getMovieProperty('imdbID')" target="_blank">IMDB</a></div>
     <div>{{ getMovieProperty('Plot') }}</div>
-    <!--<div><img v-bind:src="getMovieProperty('Poster')"></div>-->
+    <div><img v-bind:src="getMovieProperty('Poster')"></div>
     <div class="ratings">
       {{ getMovieProperty('imdbRating') }} [<span v-for="n in getMovieRating()" v-bind:class="{ 'active-star': (n === 1) }">*</span>]
     </div>
     <nav>
       <ul>
         <li v-for="(movie, i) in movies">
-          <a v-bind:class="{ active: (i === myIdx) }" v-on:click="navTo(i)" class="nav-circle">@</a>
+          <a v-bind:class="{ active: (i === movieIdx) }" v-on:click="navTo(i)" class="nav-circle">@</a>
         </li>
       </ul>
     </nav>
-    <div class="nav-buttons">
+    <!--<div class="nav-buttons">
       <button v-on:click="navLeft"><</button>
       <button v-on:click="navRight">></button>
-    </div>
-    <!--<pre>{{ movies[myIdx] }}</pre>-->
+    </div>-->
+    <!--<pre>{{ movies[movieIdx] }}</pre>-->
   </div>
 
   <script>
@@ -69,7 +69,7 @@
           down: false,
           x: 0
         },
-        myIdx: 0,
+        movieIdx: 0,
         movies: [],
       },
       mounted: function() {
@@ -121,18 +121,18 @@
       },
       methods: {
         navTo: function(idx) {
-          this.myIdx = idx;
+          this.movieIdx = idx;
         },
         navLeft: function() {
-          this.myIdx--;
-          if (this.myIdx < 0) {
-            this.myIdx = this.movies.length - 1;
+          this.movieIdx--;
+          if (this.movieIdx < 0) {
+            this.movieIdx = this.movies.length - 1;
           }
         },
         navRight: function() {
-          this.myIdx++;
-          if (this.myIdx >= this.movies.length) {
-            this.myIdx = 0;
+          this.movieIdx++;
+          if (this.movieIdx >= this.movies.length) {
+            this.movieIdx = 0;
           }
         },
         mouseDown: function(e) {
@@ -157,16 +157,16 @@
         },
         getMovieProperty: function(prop) {
           var val = 'Placeholder';
-          if (this.movies[this.myIdx]) {
-            val = this.movies[this.myIdx][prop]
+          if (this.movies[this.movieIdx]) {
+            val = this.movies[this.movieIdx][prop]
           }
           return val;
         },
         getMovieRating: function() {
           var rating = [];
-          if (this.movies[this.myIdx]) {
+          if (this.movies[this.movieIdx]) {
             // Convert IMDB rating to 5 star scale
-            var stars = Math.round(5 * ((this.movies[this.myIdx].imdbRating) / 10));
+            var stars = Math.round(5 * ((this.movies[this.movieIdx].imdbRating) / 10));
             rating = Array(5).fill(1);
             rating = rating.fill(0, stars);
           }
