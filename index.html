@@ -25,19 +25,30 @@
     .active {
       font-weight: bold;
     }
+    
+    .active-star {
+      color: gold;
+    }
+    
+    .nav-circle {
+      cursor: pointer;
+    }
   </style>
 </head>
 
 <body>
-  <div id="app" v-on:touchstart="mouseDown" v-on:touchend="mouseUp" v-on:keydown.left="navLeft" v-on:keydown.right="navRight">
+  <div id="app" tabindex="-1" v-on:touchstart="mouseDown" v-on:touchend="mouseUp" v-on:keydown.left="navLeft" v-on:keydown.right="navRight">
     myIdx: {{ myIdx }} <br>
     <div>{{ getMovieProperty('Title') }} <a v-bind:href="'http://www.imdb.com/title/' + getMovieProperty('imdbID')" target="_blank">IMDB</a></div>
     <div>{{ getMovieProperty('Plot') }}</div>
     <!--<div><img v-bind:src="getMovieProperty('Poster')"></div>-->
+    <div class="ratings">
+      {{ getMovieProperty('imdbRating') }} [<span v-for="n in getMovieRating()" v-bind:class="{ 'active-star': (n === 1) }">*</span>]
+    </div>
     <nav>
       <ul>
         <li v-for="(movie, i) in movies">
-          <a v-bind:class="{ active: (i === myIdx) }">@</a>
+          <a v-bind:class="{ active: (i === myIdx) }" v-on:click="navTo(i)" class="nav-circle">@</a>
         </li>
       </ul>
     </nav>
@@ -68,6 +79,7 @@
           'http://www.omdbapi.com/?t=civil+war&y=2016&plot=short&r=json',
           'http://www.omdbapi.com/?t=winter+soldier&y=2014&plot=short&r=json',
           'https://www.omdbapi.com/?t=strange&y=2016&plot=short&r=json',
+          'http://www.omdbapi.com/?t=The+Avengers&y=2012&plot=short&r=json'
         ];
 
         // Function that returns a promise that should resolve with the JSON for the requested movie
@@ -108,6 +120,9 @@
         });
       },
       methods: {
+        navTo: function(idx) {
+          this.myIdx = idx;
+        },
         navLeft: function() {
           this.myIdx--;
           if (this.myIdx < 0) {
@@ -121,16 +136,16 @@
           }
         },
         mouseDown: function(e) {
-          console.log('mouseDown', e.changedTouches[0].clientX);
+          //console.log('mouseDown', e.changedTouches[0].clientX);
           this.mouse.down = true;
           this.mouse.x = e.changedTouches[0].clientX;
         },
         mouseUp: function(e) {
           if (this.mouse.down) {
             var deltaX = e.changedTouches[0].clientX - this.mouse.x;
-            console.log('mouseUp', e.changedTouches[0].clientX, deltaX);
+            //console.log('mouseUp', e.changedTouches[0].clientX, deltaX);
             this.mouse.down = false;
-            var threshold = 200;
+            var threshold = 200; // min distance of swipe required for navigation
             if (Math.abs(deltaX) >= threshold) {
               if (deltaX < 0) {
                 this.navRight();
@@ -146,6 +161,16 @@
             val = this.movies[this.myIdx][prop]
           }
           return val;
+        },
+        getMovieRating: function() {
+          var rating = [];
+          if (this.movies[this.myIdx]) {
+            // Convert IMDB rating to 5 star scale
+            var stars = Math.round(5 * ((this.movies[this.myIdx].imdbRating) / 10));
+            rating = Array(5).fill(1);
+            rating = rating.fill(0, stars);
+          }
+          return rating;
         },
       }
     })
