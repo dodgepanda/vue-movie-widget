@@ -1,0 +1,22 @@
+{
+  "Title": "Doctor Strange",
+  "Year": "2016",
+  "Rated": "PG-13",
+  "Released": "04 Nov 2016",
+  "Runtime": "115 min",
+  "Genre": "Action, Adventure, Fantasy",
+  "Director": "Scott Derrickson",
+  "Writer": "Jon Spaihts, Scott Derrickson, C. Robert Cargill",
+  "Actors": "Benedict Cumberbatch, Chiwetel Ejiofor, Rachel McAdams, Benedict Wong",
+  "Plot": "A former neurosurgeon embarks on a journey of healing only to be drawn into the world of the mystic arts.",
+  "Language": "English",
+  "Country": "USA",
+  "Awards": "1 win & 7 nominations.",
+  "Poster": "https://images-na.ssl-images-amazon.com/images/M/MV5BMjM2ODA4MTM0M15BMl5BanBnXkFtZTgwNzE5OTYxMDI@._V1_SX300.jpg",
+  "Metascore": "72",
+  "imdbRating": "7.9",
+  "imdbVotes": "145,669",
+  "imdbID": "tt1211837",
+  "Type": "movie",
+  "Response": "True"
+}

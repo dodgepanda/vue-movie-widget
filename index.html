@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Welcome to Vue</title>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <style>
+    #app {
+      border: 1px solid black;
+      width: 100%;
+      height: 100%;
+      outline: none;
+    }
+    
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+    
+    li {
+      display: inline;
+    }
+    
+    .active {
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app" tabindex="-1" v-on:mousedown="mouseDown" v-on:mouseup="mouseUp" v-on:keydown.left="navLeft" v-on:keydown.right="navRight">
+    myIdx: {{ myIdx }} <br>
+    <div>{{ getMovieProperty('Title') }}</div>
+    <div>{{ getMovieProperty('Plot') }}</div>
+    <!--<div><img v-bind:src="getMovieProperty('Poster')"></div>-->
+    <nav>
+      <ul>
+        <li v-for="(movie, i) in movies">
+          <a v-bind:class="{ active: (i === myIdx) }">@</a>
+        </li>
+      </ul>
+    </nav>
+    <div>
+      <button v-on:click="navLeft"><</button>
+      <button v-on:click="navRight">></button>
+    </div>
+    <pre>{{ movies[myIdx] }}</pre>
+  </div>
+
+  <script>
+    'use strict';
+
+    new Vue({
+      el: '#app',
+      data: {
+        mouse: {
+          down: false,
+          x: 0
+        },
+        myIdx: 0,
+        movies: [],
+      },
+      mounted: function() {
+        // Movie data from Open Movie Database - my top five Marvel movies
+        var movieUrls = [
+          'http://www.omdbapi.com/?t=guardians+of+the+galaxy&y=&plot=short&r=json',
+          'http://www.omdbapi.com/?t=strange&y=2016&plot=short&r=json'
+        ];
+
+        // Function that returns a promise that should resolve with the JSON for the requested movie
+        var requestMovie = function(url) {
+          var p = new Promise(function(resolve, reject) {
+            var request = new XMLHttpRequest();
+
+            request.onreadystatechange = function() {
+              if (request.readyState === 4) { // done
+                if (request.status === 200) { // success
+                  resolve(request.responseText);
+                } else { // failure
+                  reject(request.statusText);
+                }
+              }
+            };
+
+            request.open('Get', url);
+            request.send();
+          });
+
+          return p;
+        };
+
+        var self = this;
+        // Create a promise for each movie url
+        Promise.all(movieUrls.map(function(url) {
+          return requestMovie(url);
+        })).then(function(values) {
+          // When all promises have been resolved, parse the returned JSON and add to movies array
+          values.forEach(function(json) {
+            var movie = JSON.parse(json);
+            self.movies.push(movie);
+          });
+        }, function(errors) {
+          // something went wrong
+          console.log(errors);
+        });
+      },
+      methods: {
+        navLeft: function() {
+          this.myIdx--;
+          if (this.myIdx < 0) {
+            this.myIdx = 0
+          }
+        },
+        navRight: function() {
+          this.myIdx++;
+          if (this.myIdx >= this.movies.length) {
+            this.myIdx = this.movies.length - 1;
+          }
+        },
+        mouseDown: function(e) {
+          console.log('mouseDown', e.x);
+          this.mouse.down = true;
+          this.mouse.x = e.x;
+        },
+        mouseUp: function(e) {
+          if (this.mouse.down) {
+            console.log('mouseUp', e.x, e.x - this.mouse.x);
+            this.mouse.down = false;
+          }
+        },
+        getMovieProperty: function(prop) {
+          var val = 'Placeholder';
+          if (this.movies[this.myIdx]) {
+            val = this.movies[this.myIdx][prop]
+          }
+          return val;
+        },
+      }
+    })
+  </script>
+</body>
+
+</html>
