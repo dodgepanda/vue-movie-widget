@@ -1,0 +1,91 @@
+/* Sample color palette */
+
+:root {
+  --yellow: #fecf33;
+  --light-orange: #fdbd39;
+  --peach: #ee6723;
+}
+
+/* Text styles */
+
+H1 {
+  font-family: Roboto;
+  font-size: 24px;
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  color: #3b3f47;
+}
+
+.movie-title {
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.25;
+  letter-spacing: 0.4px;
+}
+
+H3 {
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: 0.5px;
+  color: #6b6b6b;
+}
+
+.movie-description {
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.29;
+  letter-spacing: 0.5px;
+  text-align: left;
+  color: #6b6b6b;
+}
+
+.more {
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: 0.5px;
+  text-align: right;
+  color: #276cf2;
+}
+
+#movieapp {
+  border: 1px solid black;
+  width: 100%;
+  height: 100%;
+  outline: none;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  display: inline;
+}
+
+.active {
+  /*font-weight: bold;*/
+}
+
+.active-star {
+  color: gold;
+}
+
+.nav-circle {
+  font-family: Roboto;
+  cursor: pointer;
+}
