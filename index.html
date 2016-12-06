@@ -31,7 +31,7 @@
 <body>
   <div id="app" tabindex="-1" v-on:mousedown="mouseDown" v-on:mouseup="mouseUp" v-on:keydown.left="navLeft" v-on:keydown.right="navRight">
     myIdx: {{ myIdx }} <br>
-    <div>{{ getMovieProperty('Title') }}</div>
+    <div>{{ getMovieProperty('Title') }} <a v-bind:href="'http://www.imdb.com/title/' + getMovieProperty('imdbID')" target="_blank">IMDB</a></div>
     <div>{{ getMovieProperty('Plot') }}</div>
     <!--<div><img v-bind:src="getMovieProperty('Poster')"></div>-->
     <nav>
@@ -41,7 +41,7 @@
         </li>
       </ul>
     </nav>
-    <div>
+    <div class="nav-buttons">
       <button v-on:click="navLeft"><</button>
       <button v-on:click="navRight">></button>
     </div>
@@ -109,24 +109,34 @@
         navLeft: function() {
           this.myIdx--;
           if (this.myIdx < 0) {
-            this.myIdx = 0
+            this.myIdx = this.movies.length - 1;
           }
         },
         navRight: function() {
           this.myIdx++;
           if (this.myIdx >= this.movies.length) {
-            this.myIdx = this.movies.length - 1;
+            this.myIdx = 0;
           }
         },
         mouseDown: function(e) {
-          console.log('mouseDown', e.x);
+          //console.log('mouseDown', e.x);
           this.mouse.down = true;
           this.mouse.x = e.x;
         },
         mouseUp: function(e) {
+          // todo: deltaTime threshold between mouse up & down to swipe when hilightning text..
           if (this.mouse.down) {
-            console.log('mouseUp', e.x, e.x - this.mouse.x);
+            var deltaX = e.x - this.mouse.x;
+            //console.log('mouseUp', e.x, deltaX);
             this.mouse.down = false;
+            var threshold = 200;
+            if (Math.abs(deltaX) >= threshold) {
+              if (deltaX > 0) {
+                this.navRight();
+              } else {
+                this.navLeft();
+              }
+            }
           }
         },
         getMovieProperty: function(prop) {
