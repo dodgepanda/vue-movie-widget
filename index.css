@@ -133,3 +133,8 @@ li {
   margin-left: 16px;
   margin-right: 16px;
 }
+
+.movie-poster img {
+  height: 100%;
+  width: 100%;
+}
