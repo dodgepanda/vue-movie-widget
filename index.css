@@ -58,10 +58,11 @@ H3 {
   letter-spacing: 0.5px;
   text-align: right;
   color: #276cf2;
+  text-decoration: none;
 }
 
 #movieapp {
-  border: 1px solid black;
+  /*border: 1px solid black;*/
   width: 100%;
   height: 100%;
   outline: none;
@@ -82,10 +83,53 @@ li {
 }
 
 .active-star {
-  color: gold;
+  color: #ffcc24;
 }
 
 .nav-circle {
-  font-family: Roboto;
   cursor: pointer;
+  margin: 6px;
+  color: #979797;
+}
+
+.in-theaters {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.movie-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  /*width: 343px;
+  height: 156px;*/
+  border-radius: 2.5px;
+  background-color: #f2f3f5;
+  margin-left: 16px;
+  margin-right: 16px;
+  margin-bottom: 16px;
+}
+
+.movie-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 16px;
+}
+
+.carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.movie-poster {
+  background-color: #bd10e0;
+}
+
+.header {
+  margin-left: 16px;
+  margin-right: 16px;
 }
