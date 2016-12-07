@@ -137,4 +137,5 @@ li {
 .movie-poster img {
   height: 100%;
   width: 100%;
+  border-radius: 0px 2.5px 2.5px 0px;
 }
